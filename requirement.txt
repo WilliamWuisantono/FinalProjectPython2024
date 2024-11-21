@@ -1,6 +1,8 @@
-streamlit
+Flask
 nba_api
 pandas
 matplotlib
 seaborn
+Pillow
+requests
 os
