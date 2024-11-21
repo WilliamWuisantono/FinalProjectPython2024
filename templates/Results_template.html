@@ -10,12 +10,12 @@
     <div class="container">
         <h1>{{ player_name }}'s Stats</h1>
         <div class="visuals">
-            <img src="{{ url_for('static', filename=visuals['career_points']) }}" alt="Career Points">
-            <img src="{{ url_for('static', filename=visuals['shooting_percentages']) }}" alt="Shooting Percentages">
-            <img src="{{ url_for('static', filename=visuals['core_stats']) }}" alt="Core Stats">
-            <img src="{{ url_for('static', filename=visuals['correlation_heatmap']) }}" alt="Correlation Heatmap">
-            <img src="{{ url_for('static', filename=visuals['points_vs_assists']) }}" alt="Points vs Assists">
-            <img src="{{ url_for('static', filename=visuals['cluster_plot']) }}" alt="Cluster Plot">
+            <img src="{{ url_for('static', filename=visuals['career_points.png']) }}" alt="Career Points">
+            <img src="{{ url_for('static', filename=visuals['shooting_percentages.png']) }}" alt="Shooting Percentages">
+            <img src="{{ url_for('static', filename=visuals['core_stats.png']) }}" alt="Core Stats">
+            <img src="{{ url_for('static', filename=visuals['correlation_heatmap.png']) }}" alt="Correlation Heatmap">
+            <img src="{{ url_for('static', filename=visuals['points_vs_assists.png']) }}" alt="Points vs Assists">
+            <img src="{{ url_for('static', filename=visuals['cluster_plot.png']) }}" alt="Cluster Plot">
         </div>
         <a href="{{ url_for('index') }}">Search Another Player</a>
     </div>
