@@ -1,10 +1,11 @@
+import matplotlib
+matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 import seaborn as sns
 from Data_Preprocessing import preprocess_data
 import os
 
 def generate_all_visuals(input_csv, player_name):
-    """Generate all visualizations and save them to the static folder."""
     df = preprocess_data(input_csv)
 
     static_folder = "static"
