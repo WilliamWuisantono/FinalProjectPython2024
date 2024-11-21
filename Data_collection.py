@@ -15,7 +15,11 @@ def fetch_player_stats_and_save(player_id, output_file="player_stats.csv"):
     return output_file
 
 # Testing the function with a player's name
+<<<<<<< HEAD
 player_name = "LeBron James"
+=======
+player_name = "Stephen Curry"
+>>>>>>> 364a711cecfe4b718dfeb880eac7fb17ff9cc7ca
 
 # Get Player ID from name
 player_id = get_player_id_from_name(player_name)
