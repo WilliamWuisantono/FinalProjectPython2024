@@ -3,7 +3,7 @@ import seaborn as sns
 from Data_Preprocessing import preprocess_data
 import os
 
-def generate_all_visuals(input_csv):
+def generate_all_visuals(input_csv, player_name):
     df = preprocess_data(input_csv)
 
     static_folder = "static"
@@ -15,7 +15,7 @@ def generate_all_visuals(input_csv):
     # Career Points Bar Chart
     plt.figure(figsize=(10, 6))
     sns.barplot(x=df["SEASON_ID"], y=df["PTS"])
-    plt.title("Career Points by Season")
+    plt.title(f"{player_name}'s Career Points by Season")
     plt.xlabel("Season")
     plt.ylabel("Total Points")
     plt.xticks(rotation=45)
@@ -33,7 +33,7 @@ def generate_all_visuals(input_csv):
     }
     plt.figure(figsize=(8, 8))
     plt.pie(percentages.values(), labels=percentages.keys(), autopct='%1.1f%%', startangle=90)
-    plt.title("Shooting Percentages")
+    plt.title(f"{player_name}'s Shooting Percentages")
     percentages_filename = os.path.join(static_folder, "shooting_percentages.png")
     plt.savefig(percentages_filename)
     plt.close()
@@ -44,7 +44,7 @@ def generate_all_visuals(input_csv):
     plt.plot(df["SEASON_ID"], df["REB"], label="Rebounds", marker="o")
     plt.plot(df["SEASON_ID"], df["AST"], label="Assists", marker="o")
     plt.plot(df["SEASON_ID"], df["BLK"], label="Blocks", marker="o")
-    plt.title("Rebounds, Assists, and Blocks by Season")
+    plt.title(f"{player_name}'s Rebounds, Assists, and Blocks by Season")
     plt.xlabel("Season")
     plt.ylabel("Count")
     plt.xticks(rotation=45)
@@ -58,7 +58,7 @@ def generate_all_visuals(input_csv):
     # Correlation Heatmap
     plt.figure(figsize=(10, 8))
     sns.heatmap(df[["PTS", "REB", "AST", "STL", "BLK"]].corr(), annot=True, cmap="coolwarm", fmt=".2f")
-    plt.title("Correlation Heatmap")
+    plt.title(f"{player_name}'s Correlation Heatmap")
     heatmap_filename = os.path.join(static_folder, "correlation_heatmap.png")
     plt.savefig(heatmap_filename)
     plt.close()
@@ -67,7 +67,7 @@ def generate_all_visuals(input_csv):
     # Scatter Plot for Assists vs Points
     plt.figure(figsize=(8, 6))
     sns.scatterplot(x=df["PTS"], y=df["AST"])
-    plt.title("Points vs Assists")
+    plt.title(f"{player_name}'s Points vs Assists")
     plt.xlabel("Total Points")
     plt.ylabel("Total Assists")
     scatter_filename = os.path.join(static_folder, "points_vs_assists.png")
@@ -79,7 +79,7 @@ def generate_all_visuals(input_csv):
     # Cluster Plot For Points, Rebounds, and Assists
     plt.figure(figsize=(8, 6))
     sns.scatterplot(x=df["PTS"], y=df["REB"], hue=df["AST"], palette="viridis")
-    plt.title("Cluster Plot: Points, Rebounds, and Assists")
+    plt.title(f"{player_name}'s Cluster Plot: Points, Rebounds, and Assists")
     plt.xlabel("Total Points")
     plt.ylabel("Total Rebounds")
     cluster_filename = os.path.join(static_folder, "cluster_plot.png")
@@ -93,7 +93,8 @@ def generate_all_visuals(input_csv):
 # This block is for testing purposes
 if __name__ == "__main__":
     input_csv = "player_stats.csv"
-    graph_filenames = generate_all_visuals(input_csv)
+    player_name = "LeBron James"  # Replace with the player's name
+    graph_filenames = generate_all_visuals(input_csv, player_name)
     print("Visuals generated and saved to the static folder:")
     for name, filename in graph_filenames.items():
         print(f"{name}: {filename}")
