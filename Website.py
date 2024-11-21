@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request, redirect, url_for
-from Generate_Visuals import generate_all_visuals
+from Generate_visuals import generate_all_visuals
 from Data_collections import get_player_id_from_name, fetch_player_stats_and_save
 
 app = Flask(__name__)
