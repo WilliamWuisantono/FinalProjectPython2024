@@ -1,7 +1,6 @@
 import pandas as pd
 
 def preprocess_data(input_csv):
-    """Preprocess player stats from a CSV file."""
     df = pd.read_csv(input_csv)
 
     # Fill missing values with 0
