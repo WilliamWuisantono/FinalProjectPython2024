@@ -4,6 +4,7 @@ from Data_Preprocessing import preprocess_data
 import os
 
 def generate_all_visuals(input_csv, player_name):
+    """Generate all visualizations and save them to the static folder."""
     df = preprocess_data(input_csv)
 
     static_folder = "static"
@@ -39,7 +40,7 @@ def generate_all_visuals(input_csv, player_name):
     plt.close()
     graph_filenames["shooting_percentages"] = percentages_filename
 
-    # Core Stats Line Chart per Season
+    # Core Stats Line Chart
     plt.figure(figsize=(10, 6))
     plt.plot(df["SEASON_ID"], df["REB"], label="Rebounds", marker="o")
     plt.plot(df["SEASON_ID"], df["AST"], label="Assists", marker="o")
@@ -76,7 +77,7 @@ def generate_all_visuals(input_csv, player_name):
     plt.close()
     graph_filenames["points_vs_assists"] = scatter_filename
 
-    # Cluster Plot For Points, Rebounds, and Assists
+    # Cluster Plot
     plt.figure(figsize=(8, 6))
     sns.scatterplot(x=df["PTS"], y=df["REB"], hue=df["AST"], palette="viridis")
     plt.title(f"{player_name}'s Cluster Plot: Points, Rebounds, and Assists")
@@ -89,12 +90,3 @@ def generate_all_visuals(input_csv, player_name):
     graph_filenames["cluster_plot"] = cluster_filename
 
     return graph_filenames
-
-# This block is for testing purposes
-if __name__ == "__main__":
-    input_csv = "player_stats.csv"
-    player_name = "LeBron James"  # Replace with the player's name
-    graph_filenames = generate_all_visuals(input_csv, player_name)
-    print("Visuals generated and saved to the static folder:")
-    for name, filename in graph_filenames.items():
-        print(f"{name}: {filename}")

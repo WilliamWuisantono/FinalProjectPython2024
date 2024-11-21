@@ -1,10 +1,8 @@
 import pandas as pd
 
 def preprocess_data(input_csv):
+    """Preprocess player stats from a CSV file."""
     df = pd.read_csv(input_csv)
-    
-    # Print the column names to check for the 'TO' column
-    print("Columns in the dataset:", df.columns)
 
     # Fill missing values with 0
     df.fillna(0, inplace=True)
@@ -17,11 +15,10 @@ def preprocess_data(input_csv):
     for col in percentage_columns:
         df[col] = df[col] * 100
 
-    # Add a calculated column for overall efficiency (check if 'TO' exists)
+    # Add a calculated column for overall efficiency
     if 'TO' in df.columns:
         df["EFFICIENCY"] = df["PTS"] + df["REB"] + df["AST"] - df["TO"]
     else:
-        print("Warning: 'TO' (turnovers) column is missing. Skipping efficiency calculation.")
-        df["EFFICIENCY"] = df["PTS"] + df["REB"] + df["AST"]  # You can modify this calculation if necessary
+        df["EFFICIENCY"] = df["PTS"] + df["REB"] + df["AST"]
 
     return df
