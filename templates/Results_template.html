@@ -9,13 +9,38 @@
 <body>
     <div class="container">
         <h1>{{ player_name }}'s Stats</h1>
+        {% if player_image %}
+        <div class="player-image">
+            <h2>Player Headshot and Career Totals</h2>
+            <img src="{{ url_for('static', filename=player_image) }}" alt="{{ player_name }}'s Stats and Image">
+        </div>
+        {% endif %}
         <div class="visuals">
-            <img src="{{ url_for('static', filename=visuals['career_points.png']) }}" alt="Career Points">
-            <img src="{{ url_for('static', filename=visuals['shooting_percentages.png']) }}" alt="Shooting Percentages">
-            <img src="{{ url_for('static', filename=visuals['core_stats.png']) }}" alt="Core Stats">
-            <img src="{{ url_for('static', filename=visuals['correlation_heatmap.png']) }}" alt="Correlation Heatmap">
-            <img src="{{ url_for('static', filename=visuals['points_vs_assists.png']) }}" alt="Points vs Assists">
-            <img src="{{ url_for('static', filename=visuals['cluster_plot.png']) }}" alt="Cluster Plot">
+            <h2>Performance Visualizations</h2>
+            {% if visuals.career_points %}
+                <h3>Career Points</h3>
+                <img src="{{ url_for('static', filename='career_points.png') }}" alt="Career Points Graph">
+            {% endif %}
+            {% if visuals.shooting_percentages %}
+                <h3>Shooting Percentages</h3>
+                <img src="{{ url_for('static', filename='shooting_percentages.png') }}" alt="Shooting Percentages Graph">
+            {% endif %}
+            {% if visuals.core_stats %}
+                <h3>Core Stats</h3>
+                <img src="{{ url_for('static', filename='core_stats.png') }}" alt="Core Stats Graph">
+            {% endif %}
+            {% if visuals.correlation_heatmap %}
+                <h3>Correlation Heatmap</h3>
+                <img src="{{ url_for('static', filename='correlation_heatmap.png') }}" alt="Correlation Heatmap Graph">
+            {% endif %}
+            {% if visuals.points_vs_assists %}
+                <h3>Points vs Assists</h3>
+                <img src="{{ url_for('static', filename='points_vs_assists.png') }}" alt="Points vs Assists Graph">
+            {% endif %}
+            {% if visuals.cluster_plot %}
+                <h3>Cluster Plot</h3>
+                <img src="{{ url_for('static', filename='cluster_plot.png') }}" alt="Cluster Plot Graph">
+            {% endif %}
         </div>
         <a href="{{ url_for('index') }}">Search Another Player</a>
     </div>
