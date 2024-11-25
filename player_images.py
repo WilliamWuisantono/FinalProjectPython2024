@@ -1,10 +1,13 @@
 from nba_api.stats.endpoints import playercareerstats
 from nba_api.stats.static import players
 import pandas as pd
+import matplotlib 
+matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 from PIL import Image
 from io import BytesIO
 import requests
+import os  
 
 # Function to fetch player data by name
 def get_player_id(player_name):
@@ -33,8 +36,11 @@ def get_player_headshot(player_id):
         raise ValueError(f"Headshot not found for player ID {player_id}.")
 
 # Function to create the visualization
-def plot_career_totals_with_headshot(player_name):
+def save_career_totals_with_headshot(player_name, static_folder="static"):
     try:
+        #Ensure the static folder exists
+        os.makedirs(static_folder, exist_ok=True)
+
         # Get player ID and details
         player_id, full_name = get_player_id(player_name)
         print(f"Found player: {full_name}, ID: {player_id}")
@@ -61,9 +67,13 @@ def plot_career_totals_with_headshot(player_name):
         ax[1].table(cellText=table_data.values, colLabels=table_data.columns, loc='center', cellLoc='center', colLoc='center')
         ax[1].set_title("Career Totals", fontsize=14)
         
-        # Show the plot
+        # Show the plot as a PNG
+        output_path = os.path.join(static_folder, "player_photo.png")
         plt.tight_layout()
-        plt.show()
+        plt.savefig(output_path)
+        plt.close()
+        return output_path
+       
         
     except ValueError as e:
         print(e)
