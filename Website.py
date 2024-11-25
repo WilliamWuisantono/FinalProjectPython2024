@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request
 from Generate_visuals import generate_all_visuals
 from Data_collections import get_player_id_from_name, fetch_player_stats_and_save
+from player_images import save_career_totals_with_headshot
 
 app = Flask(__name__)
 
@@ -21,8 +22,16 @@ def results():
     stats_csv = fetch_player_stats_and_save(player_id)
     visuals = generate_all_visuals(stats_csv, player_name)
 
-    # Pass visuals and player name to the results template
-    return render_template('Results_template.html', player_name=player_name, visuals=visuals)
+     # Generate player headshot and career totals PNG
+    player_image = save_career_totals_with_headshot(player_name)
+
+     # Pass visuals and player details to the results template
+    return render_template(
+        "Results_template.html",
+        player_name=player_name,
+        visuals=visuals,
+        player_image="player_photo.png",)
+    
 
 if __name__ == '__main__':
     app.run(debug=True)
