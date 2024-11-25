@@ -9,12 +9,11 @@
 <body>
     <div class="container">
         <h1>{{ player_name }}'s Stats</h1>
-        {% if player_image %}
         <div class="player-image">
             <h2>Player Headshot and Career Totals</h2>
             <img src="{{ url_for('static', filename='player_photo.png') }}" alt="{{ player_name }}'s Stats and Image">
         </div>
-        {% endif %}
+ 
         <div class="visuals">
             <h2>Performance Visualizations</h2>
             {% if visuals.career_points %}
