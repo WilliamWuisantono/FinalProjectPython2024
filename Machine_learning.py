@@ -1,44 +1,77 @@
 import pandas as pd
 from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LinearRegression
-from sklearn.metrics import mean_squared_error
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.multioutput import MultiOutputRegressor
+from sklearn.metrics import mean_squared_error, accuracy_score
 from Data_Preprocessing import preprocess_data
-
-# Function to prepare data for ML
-def prepare_data_for_model(input_csv):
-    # Preprocess the data
+ 
+# Function to prepare data for multi-output regression
+def prepare_data_for_multi_target(input_csv):
     df = preprocess_data(input_csv)
-
-    # Select relevant features and target
-    features = ["REB", "AST", "STL", "BLK", "MIN"]  # Input features
-    target = "PTS"  # Target variable (Points)
-
+ 
+    # Features and multiple targets
+    features = ["REB", "AST", "STL", "BLK", "MIN"]
+    targets = ["PTS", "REB", "AST"]  # Predict Points, Rebounds, Assists
+ 
+    X = df[features]
+    y = df[targets]
+    return X, y
+ 
+# Function to train a multi-output regression model
+def train_multi_target_model(X, y):
+    model = MultiOutputRegressor(LinearRegression())
+    model.fit(X, y)
+ 
+    # Evaluate model performance
+    predictions = model.predict(X)
+    mse = mean_squared_error(y, predictions, multioutput="raw_values")
+    print(f"Mean Squared Error for Multi-Target Model: {mse}")
+ 
+    return model
+ 
+# Function to prepare data for classification
+def prepare_data_for_classification(input_csv):
+    df = preprocess_data(input_csv)
+ 
+    # Features and binary classification target
+    features = ["REB", "AST", "STL", "BLK", "MIN"]
+    target = "High_Performer"
+ 
+    # Create binary classification label
+    df["High_Performer"] = (df["PTS"] > 20).astype(int)  # Example threshold: Points > 20
+ 
     X = df[features]
     y = df[target]
-
     return X, y
-
-# Function to train the ML model
-def train_model(X, y):
-    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
-    
-    model = LinearRegression()
-    model.fit(X_train, y_train)
-
-    # Evaluate the model
-    predictions = model.predict(X_test)
-    mse = mean_squared_error(y_test, predictions)
-    print(f"Model Mean Squared Error: {mse}")
-    
+ 
+# Function to train a classification model
+def train_classification_model(X, y):
+    model = RandomForestClassifier(random_state=42)
+    model.fit(X, y)
+ 
+    # Evaluate model performance
+    predictions = model.predict(X)
+    accuracy = accuracy_score(y, predictions)
+    print(f"Classification Model Accuracy: {accuracy}")
+ 
     return model
-
-# Function to predict player performance
-def predict_performance(model, input_data):
-    predictions = model.predict(input_data)
-    return predictions
-
-# Train and return the model
-def get_trained_model(input_csv):
-    X, y = prepare_data_for_model(input_csv)
-    model = train_model(X, y)
-    return model
+ 
+# Functions to train and return models
+def get_multi_target_model(input_csv):
+    X, y = prepare_data_for_multi_target(input_csv)
+    return train_multi_target_model(X, y)
+ 
+def get_classification_model(input_csv):
+    X, y = prepare_data_for_classification(input_csv)
+    return train_classification_model(X, y)
+ 
+# Function to predict performance stats and high performer classification
+def predict_performance_and_classification(multi_model, classification_model, input_data):
+    # Predict multiple stats
+    multi_predictions = multi_model.predict(input_data)
+ 
+    # Predict classification
+    classification_prediction = classification_model.predict(input_data)
+ 
+    return multi_predictions, classification_prediction
