@@ -7,9 +7,9 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
-    <div class="container" style="margin-left: -5cm;">
+    <div class="container">
         <h1>{{ player_name }}'s Stats</h1>
-        <div class="player-image">
+        <div class="player-image" style="margin-left: -5cm;">
             <h2>Player Headshot and Career Totals</h2>
             <img src="{{ url_for('static', filename='player_photo.png') }}" alt="{{ player_name }}'s Stats and Image">
         </div>
