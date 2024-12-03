@@ -6,21 +6,17 @@ from Data_collections import fetch_player_stats_and_save
 
 # Generate Career Points Bar Chart (Interactive)
 def generate_career_points(preprocessed_data, output_file="career_points_interactive.html"):
-    # Ensure the data is sorted by 'SEASON_ID' to plot correctly in chronological order
     df = preprocessed_data
-    # Ensure SEASON_ID is treated as a string to maintain chronological order when necessary
     df['SEASON_ID'] = df['SEASON_ID'].astype(str)
     df_sorted = df.sort_values(by='SEASON_ID')  # Sort by the season
-
     if 'SEASON_ID' not in df_sorted.columns or 'PTS' not in df_sorted.columns:
         raise ValueError("The DataFrame must contain 'SEASON_ID' and 'PTS' columns.")
 
-    # Plot the career points for each season
     fig = px.bar(
         df_sorted,
         x="SEASON_ID", 
         y="PTS", 
-        color="PTS",  # Color the bars based on points
+        color="PTS",
         title="Career Points by Season",
         labels={"PTS": "Total Points", "SEASON_ID": "NBA Season"},
         template="plotly_dark",
@@ -28,7 +24,9 @@ def generate_career_points(preprocessed_data, output_file="career_points_interac
     )
 
     fig.update_traces(marker=dict(line=dict(color='black', width=1)))
-    fig.write_html(f"static/{output_file}")
+    output_path = f"static/{output_file}"
+    fig.write_html(output_path)
+    return output_file
 
 # Generate Shooting Percentages Pie Chart (Interactive)
 def generate_shooting_percentages(preprocessed_data, output_file="shooting_percentages_interactive.html"):
@@ -45,7 +43,7 @@ def generate_shooting_percentages(preprocessed_data, output_file="shooting_perce
         values="Percentage",
         title="Shooting Percentages",
         template="plotly_dark",
-        hole=0.4
+        hole=0.4  #
     )
     fig.update_traces(textinfo='percent+label')
     fig.write_html(f"static/{output_file}")
