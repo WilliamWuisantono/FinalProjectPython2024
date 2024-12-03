@@ -79,5 +79,5 @@ def results():
         is_high_performer=is_high_performer
     )
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     app.run(debug=True)

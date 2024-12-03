@@ -13,42 +13,42 @@
             <h2>Player Headshot and Career Totals</h2>
             <img src="{{ url_for('static', filename='player_photo.png') }}" alt="{{ player_name }}'s Stats and Image">
         </div>
-
+ 
         <div class="visuals">
             <h2>Performance Visualizations</h2>
-            
+           
             {% if interactive_visuals.career_points_plot %}
                 <h3>Career Points</h3>
                 <iframe src="{{ url_for('static', filename=interactive_visuals.career_points_plot) }}" width="100%" height="500px"></iframe>
             {% endif %}
-            
+           
             {% if interactive_visuals.shooting_percentages_plot %}
                 <h3>Shooting Percentages</h3>
                 <iframe src="{{ url_for('static', filename=interactive_visuals.shooting_percentages_plot) }}" width="100%" height="500px"></iframe>
             {% endif %}
-            
+           
             {% if interactive_visuals.correlation_heatmap %}
                 <h3>Correlation Heatmap</h3>
                 <iframe src="{{ url_for('static', filename=interactive_visuals.correlation_heatmap) }}" width="100%" height="500px"></iframe>
             {% endif %}
-            
+           
             {% if interactive_visuals.points_vs_assists_plot %}
                 <h3>Points vs Assists</h3>
                 <iframe src="{{ url_for('static', filename=interactive_visuals.points_vs_assists_plot) }}" width="100%" height="500px"></iframe>
             {% endif %}
-            
+           
             {% if interactive_visuals.cluster_plot %}
                 <h3>Cluster Plot</h3>
                 <iframe src="{{ url_for('static', filename=interactive_visuals.cluster_plot) }}" width="100%" height="500px"></iframe>
             {% endif %}
         </div>
-
+ 
         <div class="predictions">
             <h2>Predicted Performance</h2>
-            <p><strong>Predicted Points (Next Season):</strong> {{ predicted_points | round(1) }}</p>
-            <p><strong>Predicted Rebounds (Next Season):</strong> {{ predicted_rebounds | round(1) }}</p>
-            <p><strong>Predicted Assists (Next Season):</strong> {{ predicted_assists | round(1) }}</p>
-            <p><strong>High Performer (Next Season):</strong> {{ is_high_performer }}</p>
+            <p><strong>Predicted Points (Next Game):</strong> {{ predicted_points | round(2) }}</p>
+            <p><strong>Predicted Rebounds (Next Game):</strong> {{ predicted_rebounds | round(2) }}</p>
+            <p><strong>Predicted Assists (Next Game):</strong> {{ predicted_assists | round(2) }}</p>
+            <p><strong>High Performer (Next Game):</strong> {{ is_high_performer }}</p>
         </div>
 
         <a href="{{ url_for('home') }}">Search Another Player</a>
