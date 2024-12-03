@@ -7,8 +7,14 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
-    <div class="container" div>
-        <h1>NBA Player Stats Visualizer</h1>
+    <div class="container">
+        <div class="logo">
+            <img src="{{ url_for('static', filename='NBA.png') }}" alt="NBA Logo" width="200">
+        </div>
+
+        <h1>NBA Player Stats Visualizer </h1>
+        <h2> An MSITM Python project by Alonso, Jiwon, Silas, and William. </h2>
+        <h3> Enter player name to view their career statistics. </h3>
         <form action="{{ url_for('results') }}" method="post">
             <input type="text" name="player_name" placeholder="Enter Player Name" required>
             <button type="submit">Get Stats</button>
