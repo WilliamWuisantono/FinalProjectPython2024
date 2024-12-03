@@ -1,93 +1,106 @@
-import matplotlib
-matplotlib.use('Agg')
-import matplotlib.pyplot as plt
-import seaborn as sns
+import pandas as pd
+import plotly.express as px
+import plotly.graph_objects as go
 from Data_Preprocessing import preprocess_data
-import os
+from Data_collections import fetch_player_stats_and_save
 
-def generate_all_visuals(input_csv, player_name):
-    df = preprocess_data(input_csv)
+# Generate Career Points Bar Chart (Interactive)
+def generate_career_points(preprocessed_data, output_file="career_points_interactive.html"):
+    df = preprocessed_data
+    df['SEASON_ID'] = df['SEASON_ID'].astype(str)
+    df_sorted = df.sort_values(by='SEASON_ID')
+    if 'SEASON_ID' not in df_sorted.columns or 'PTS' not in df_sorted.columns:
+        raise ValueError("The DataFrame must contain 'SEASON_ID' and 'PTS' columns.")
 
-    static_folder = "static"
-    if not os.path.exists(static_folder):
-        os.mkdir(static_folder)
+    fig = px.bar(
+        df_sorted,
+        x="SEASON_ID", 
+        y="PTS", 
+        color="PTS",
+        title="Career Points by Season",
+        labels={"PTS": "Total Points", "SEASON_ID": "NBA Season"},
+        template="plotly_dark",
+        text_auto=True
+    )
 
-    graph_filenames = {}
+    fig.update_traces(marker=dict(line=dict(color='black', width=1)))
+    output_path = f"static/{output_file}"
+    fig.write_html(output_path)
+    return output_file
 
-    # Career Points Bar Chart
-    plt.figure(figsize=(10, 6))
-    sns.barplot(x=df["SEASON_ID"], y=df["PTS"])
-    plt.title(f"{player_name}'s Career Points by Season")
-    plt.xlabel("Season")
-    plt.ylabel("Total Points")
-    plt.xticks(rotation=45)
-    points_filename = os.path.join(static_folder, "career_points.png")
-    plt.tight_layout()
-    plt.savefig(points_filename)
-    plt.close()
-    graph_filenames["career_points"] = points_filename
-
-    # Shooting Percentages Pie Chart
-    percentages = {
-        "Field Goals": df["FG_PCT"].mean(),
-        "Three-Point FG": df["FG3_PCT"].mean(),
-        "Free Throws": df["FT_PCT"].mean()
+# Generate Shooting Percentages Pie Chart (Interactive)
+def generate_shooting_percentages(preprocessed_data, output_file="shooting_percentages_interactive.html"):
+    df = preprocessed_data
+    latest_season = df.iloc[-1]  # Use the latest season's stats
+    data = {
+        "Type": ["FG%", "3P%", "FT%"],
+        "Percentage": [latest_season["FG_PCT"], latest_season["FG3_PCT"], latest_season["FT_PCT"]]
     }
-    plt.figure(figsize=(8, 8))
-    plt.pie(percentages.values(), labels=percentages.keys(), autopct='%1.1f%%', startangle=90)
-    plt.title(f"{player_name}'s Shooting Percentages")
-    percentages_filename = os.path.join(static_folder, "shooting_percentages.png")
-    plt.savefig(percentages_filename)
-    plt.close()
-    graph_filenames["shooting_percentages"] = percentages_filename
+    pie_df = pd.DataFrame(data)
+    fig = px.pie(
+        pie_df,
+        names="Type",
+        values="Percentage",
+        title="Shooting Percentages",
+        template="plotly_dark",
+        hole=0.4  #
+    )
+    fig.update_traces(textinfo='percent+label')
+    fig.write_html(f"static/{output_file}")
+    return output_file
 
-    # Core Stats Line Chart
-    plt.figure(figsize=(10, 6))
-    plt.plot(df["SEASON_ID"], df["REB"], label="Rebounds", marker="o")
-    plt.plot(df["SEASON_ID"], df["AST"], label="Assists", marker="o")
-    plt.plot(df["SEASON_ID"], df["BLK"], label="Blocks", marker="o")
-    plt.title(f"{player_name}'s Rebounds, Assists, and Blocks by Season")
-    plt.xlabel("Season")
-    plt.ylabel("Count")
-    plt.xticks(rotation=45)
-    plt.legend()
-    core_stats_filename = os.path.join(static_folder, "core_stats.png")
-    plt.tight_layout()
-    plt.savefig(core_stats_filename)
-    plt.close()
-    graph_filenames["core_stats"] = core_stats_filename
+# Generate Correlation Heatmap
+def generate_correlation_heatmap(preprocessed_data, output_file="correlation_heatmap_interactive.html"):
+    df = preprocessed_data
+    correlation = df[["PTS", "REB", "AST", "STL", "BLK", "MIN"]].corr()
 
-    # Correlation Heatmap
-    plt.figure(figsize=(10, 8))
-    sns.heatmap(df[["PTS", "REB", "AST", "STL", "BLK"]].corr(), annot=True, cmap="coolwarm", fmt=".2f")
-    plt.title(f"{player_name}'s Correlation Heatmap")
-    heatmap_filename = os.path.join(static_folder, "correlation_heatmap.png")
-    plt.savefig(heatmap_filename)
-    plt.close()
-    graph_filenames["correlation_heatmap"] = heatmap_filename
+    fig = go.Figure(
+        data=go.Heatmap(
+            z=correlation.values,
+            x=correlation.columns,
+            y=correlation.columns,
+            colorscale="Viridis"
+        )
+    )
+    fig.update_layout(
+        title="Correlation Heatmap",
+        template="plotly_dark"
+    )
+    fig.write_html(f"static/{output_file}")
+    return output_file
 
-    # Scatter Plot for Assists vs Points
-    plt.figure(figsize=(8, 6))
-    sns.scatterplot(x=df["PTS"], y=df["AST"])
-    plt.title(f"{player_name}'s Points vs Assists")
-    plt.xlabel("Total Points")
-    plt.ylabel("Total Assists")
-    scatter_filename = os.path.join(static_folder, "points_vs_assists.png")
-    plt.tight_layout()
-    plt.savefig(scatter_filename)
-    plt.close()
-    graph_filenames["points_vs_assists"] = scatter_filename
+# Generate Points vs Assists Scatter Plot with Clustering
+def generate_points_vs_assists(preprocessed_data, output_file="points_vs_assists_interactive.html"):
+    df = preprocessed_data
+    fig = px.scatter(
+        df,
+        x="PTS",
+        y="AST",
+        color="SEASON_ID",
+        size="MIN",
+        hover_name="SEASON_ID",
+        title="Points vs Assists (Clustered by Season)",
+        labels={"PTS": "Total Points", "AST": "Total Assists"},
+        template="plotly_dark"
+    )
+    fig.update_traces(marker=dict(opacity=0.8, line=dict(width=1, color='black')))
+    fig.write_html(f"static/{output_file}")
+    return output_file
 
-    # Cluster Plot
-    plt.figure(figsize=(8, 6))
-    sns.scatterplot(x=df["PTS"], y=df["REB"], hue=df["AST"], palette="viridis")
-    plt.title(f"{player_name}'s Cluster Plot: Points, Rebounds, and Assists")
-    plt.xlabel("Total Points")
-    plt.ylabel("Total Rebounds")
-    cluster_filename = os.path.join(static_folder, "cluster_plot.png")
-    plt.tight_layout()
-    plt.savefig(cluster_filename)
-    plt.close()
-    graph_filenames["cluster_plot"] = cluster_filename
-
-    return graph_filenames
+# Generate Clustered Stats Visualization
+def generate_clustered_stats(preprocessed_data, output_file="cluster_plot_interactive.html"):
+    df = preprocessed_data
+    fig = px.scatter_3d(
+        df,
+        x="PTS",
+        y="REB",
+        z="AST",
+        color="SEASON_ID",
+        size="MIN",
+        hover_name="SEASON_ID",
+        title="Clustered Stats (Points, Rebounds, Assists)",
+        template="plotly_dark"
+    )
+    fig.update_layout(scene=dict(xaxis_title='Points', yaxis_title='Rebounds', zaxis_title='Assists'))
+    fig.write_html(f"static/{output_file}")
+    return output_file

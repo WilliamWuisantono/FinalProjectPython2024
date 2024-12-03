@@ -16,29 +16,30 @@
 
         <div class="visuals">
             <h2>Performance Visualizations</h2>
-            {% if visuals.career_points %}
+            
+            {% if interactive_visuals.career_points_plot %}
                 <h3>Career Points</h3>
-                <img src="{{ url_for('static', filename='career_points.png') }}" alt="Career Points Graph">
+                <iframe src="{{ url_for('static', filename=interactive_visuals.career_points_plot) }}" width="100%" height="500px"></iframe>
             {% endif %}
-            {% if visuals.shooting_percentages %}
+            
+            {% if interactive_visuals.shooting_percentages_plot %}
                 <h3>Shooting Percentages</h3>
-                <img src="{{ url_for('static', filename='shooting_percentages.png') }}" alt="Shooting Percentages Graph">
+                <iframe src="{{ url_for('static', filename=interactive_visuals.shooting_percentages_plot) }}" width="100%" height="500px"></iframe>
             {% endif %}
-            {% if visuals.core_stats %}
-                <h3>Core Stats</h3>
-                <img src="{{ url_for('static', filename='core_stats.png') }}" alt="Core Stats Graph">
-            {% endif %}
-            {% if visuals.correlation_heatmap %}
+            
+            {% if interactive_visuals.correlation_heatmap %}
                 <h3>Correlation Heatmap</h3>
-                <img src="{{ url_for('static', filename='correlation_heatmap.png') }}" alt="Correlation Heatmap Graph">
+                <iframe src="{{ url_for('static', filename=interactive_visuals.correlation_heatmap) }}" width="100%" height="500px"></iframe>
             {% endif %}
-            {% if visuals.points_vs_assists %}
+            
+            {% if interactive_visuals.points_vs_assists_plot %}
                 <h3>Points vs Assists</h3>
-                <img src="{{ url_for('static', filename='points_vs_assists.png') }}" alt="Points vs Assists Graph">
+                <iframe src="{{ url_for('static', filename=interactive_visuals.points_vs_assists_plot) }}" width="100%" height="500px"></iframe>
             {% endif %}
-            {% if visuals.cluster_plot %}
+            
+            {% if interactive_visuals.cluster_plot %}
                 <h3>Cluster Plot</h3>
-                <img src="{{ url_for('static', filename='cluster_plot.png') }}" alt="Cluster Plot Graph">
+                <iframe src="{{ url_for('static', filename=interactive_visuals.cluster_plot) }}" width="100%" height="500px"></iframe>
             {% endif %}
         </div>
 
@@ -50,7 +51,7 @@
             <p><strong>High Performer (Next Season):</strong> {{ is_high_performer }}</p>
         </div>
 
-        <a href="{{ url_for('index') }}">Search Another Player</a>
+        <a href="{{ url_for('home') }}">Search Another Player</a>
     </div>
 </body>
 </html>
