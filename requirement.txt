@@ -7,5 +7,8 @@ matplotlib
 Pillow
 requests
 
-#if you want to install do pip install -r requirements.txt
-#if you want to uninstall the packages for this requirements.txt file, do pip uninstall -r requirements.txt -y
+# If you want to install the dependencies, run:
+# pip install -r requirements.txt
+
+# If you want to uninstall the packages for this requirements.txt file, run:
+# pip uninstall -r requirements.txt -y
