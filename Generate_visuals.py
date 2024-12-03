@@ -6,24 +6,37 @@ from Data_collections import fetch_player_stats_and_save
 
 # Generate Career Points Bar Chart (Interactive)
 def generate_career_points(preprocessed_data, output_file="career_points_interactive.html"):
-    df = preprocessed_data
+    # Ensure SEASON_ID is treated as a string for categorical sorting
+    df = preprocessed_data.copy()
     df['SEASON_ID'] = df['SEASON_ID'].astype(str)
-    df_sorted = df.sort_values(by='SEASON_ID')  # Sort by the season
-    if 'SEASON_ID' not in df_sorted.columns or 'PTS' not in df_sorted.columns:
-        raise ValueError("The DataFrame must contain 'SEASON_ID' and 'PTS' columns.")
+    
+    # Sort the data by season to ensure proper order
+    df_sorted = df.sort_values(by='SEASON_ID', ascending=True)
 
+    # Create the bar chart with clear formatting
     fig = px.bar(
         df_sorted,
         x="SEASON_ID", 
         y="PTS", 
         color="PTS",
         title="Career Points by Season",
-        labels={"PTS": "Total Points", "SEASON_ID": "NBA Season"},
+        labels={"PTS": "Points Earned", "SEASON_ID": "NBA Season"},
         template="plotly_dark",
         text_auto=True
     )
 
-    fig.update_traces(marker=dict(line=dict(color='black', width=1)))
+    # Improve graph appearance with better spacing and marker styles
+    fig.update_traces(
+        marker=dict(line=dict(color='black', width=1))
+    )
+    fig.update_layout(
+        xaxis_title="NBA Season",
+        yaxis_title="Points Earned",
+        xaxis=dict(type="category"),
+        yaxis=dict(showgrid=True)
+    )
+
+    # Save the graph to the static folder
     output_path = f"static/{output_file}"
     fig.write_html(output_path)
     return output_file
