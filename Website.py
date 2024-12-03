@@ -29,11 +29,11 @@ def results():
 
     try:
         # Generate interactive visuals
-        career_points = generate_career_points(df, "career_points_interactive.html")
-        shooting_percentages = generate_shooting_percentages(df, "shooting_percentages_interactive.html")  
-        correlation_heatmap = generate_correlation_heatmap(df, "correlation_heatmap_interactive.html") 
-        points_vs_assists = generate_points_vs_assists(df, "points_vs_assists_interactive.html")  
-        clustered_stats = generate_clustered_stats(df, "cluster_plot_interactive.html")  
+        career_points = generate_career_points(df, "career_points_interactive.html")  # Generate Career Points Bar Chart
+        shooting_percentages = generate_shooting_percentages(df, "shooting_percentages_interactive.html")  # Shooting Percentages Pie Chart
+        correlation_heatmap = generate_correlation_heatmap(df, "correlation_heatmap_interactive.html")  # Correlation Heatmap
+        points_vs_assists = generate_points_vs_assists(df, "points_vs_assists_interactive.html")  # Points vs Assists
+        clustered_stats = generate_clustered_stats(df, "cluster_plot_interactive.html")  # Clustered Stats
     except Exception as e:
         return render_template('HomePage.html', error=f"Error generating visuals: {e}")
 
@@ -50,8 +50,8 @@ def results():
     print("Generated Visuals:", interactive_visuals)
 
     # Generate the player headshot and save it
-    player_image = save_career_totals_with_headshot(player_name) 
-    
+    player_image = save_career_totals_with_headshot(player_name)  # Generate and save headshot
+
     # Load machine learning models
     multi_target_model = get_multi_target_model(stats_csv)
     classification_model = get_classification_model(stats_csv)
@@ -60,12 +60,21 @@ def results():
     input_data = df[["REB", "AST", "STL", "BLK", "MIN"]].values
 
     # Predict performance using machine learning models
-    multi_predictions, classification_prediction, average_predicted_points = predict_performance_and_classification(
-        multi_target_model, classification_model, input_data
-    )
+    try:
+        multi_predictions, classification_prediction = predict_performance_and_classification(
+            multi_target_model, classification_model, input_data
+        )
 
-    # Determine if the player is a high performer
-    is_high_performer = "Yes" if classification_prediction[0] == 1 else "No"
+        # Unpack predictions and handle optional average
+        average_predicted_points = multi_predictions[0][0]  # Points prediction
+        predicted_rebounds = multi_predictions[0][1]        # Rebounds prediction
+        predicted_assists = multi_predictions[0][2]         # Assists prediction
+
+        # Determine if the player is a high performer
+        is_high_performer = "Yes" if classification_prediction[0] == 1 else "No"
+
+    except ValueError as e:
+        return render_template("HomePage.html", error=f"Prediction Error: {e}")
 
     # Pass visuals, player details, and predictions to the results template
     return render_template(
@@ -74,10 +83,10 @@ def results():
         interactive_visuals=interactive_visuals,  # Pass the interactive visuals
         player_image="player_photo.png",  # The headshot image
         predicted_points=average_predicted_points,
-        predicted_rebounds=multi_predictions[0][1],  # Rebounds prediction
-        predicted_assists=multi_predictions[0][2],  # Assists prediction
+        predicted_rebounds=predicted_rebounds,
+        predicted_assists=predicted_assists,
         is_high_performer=is_high_performer
     )
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     app.run(debug=True)
