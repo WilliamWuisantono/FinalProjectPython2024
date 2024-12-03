@@ -6,16 +6,9 @@ from Data_collections import fetch_player_stats_and_save
 
 # Generate Career Points Bar Chart (Interactive)
 def generate_career_points(preprocessed_data, output_file="career_points_interactive.html"):
-    # Ensure SEASON_ID is treated as a string for categorical sorting
-    df = preprocessed_data.copy()
-    df['SEASON_ID'] = df['SEASON_ID'].astype(str)
-    
-    # Sort the data by season to ensure proper order
-    df_sorted = df.sort_values(by='SEASON_ID', ascending=True)
-
     # Create the bar chart with clear formatting
     fig = px.bar(
-        df_sorted,
+        preprocessed_data,
         x="SEASON_ID", 
         y="PTS", 
         color="PTS",
@@ -46,7 +39,7 @@ def generate_shooting_percentages(preprocessed_data, output_file="shooting_perce
     df = preprocessed_data
     latest_season = df.iloc[-1]  # Use the latest season's stats
     data = {
-        "Type": ["FG%", "3P%", "FT%"],
+        "Type": ["Field Goal Percentage", "Three-Point Percentage", "Free Throw Percentage"],
         "Percentage": [latest_season["FG_PCT"], latest_season["FG3_PCT"], latest_season["FT_PCT"]]
     }
     pie_df = pd.DataFrame(data)
@@ -54,7 +47,7 @@ def generate_shooting_percentages(preprocessed_data, output_file="shooting_perce
         pie_df,
         names="Type",
         values="Percentage",
-        title="Shooting Percentages",
+        title="Shooting Percentages for Current Season",
         template="plotly_dark",
         hole=0.4  #
     )

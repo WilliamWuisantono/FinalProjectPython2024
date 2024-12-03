@@ -11,17 +11,16 @@ def preprocess_data(input_csv):
     if "SEASON_ID" in df.columns:
         df["SEASON_ID"] = df["SEASON_ID"].astype(str).str.replace("-", "/")
 
+    # Ensure SEASON_ID is treated as a string for categorical sorting
+    df["SEASON_ID"] = df["SEASON_ID"].astype(str)
+
     # Convert percentages to readable scales (e.g., 0.45 -> 45%)
     percentage_columns = ["FG_PCT", "FG3_PCT", "FT_PCT"]
     for col in percentage_columns:
         if col in df.columns:
             df[col] = df[col] * 100
 
-    # Add a calculated column for overall efficiency (if turnovers are present)
-    if "PTS" in df.columns and "REB" in df.columns and "AST" in df.columns:
-        if "TO" in df.columns:
-            df["EFFICIENCY"] = df["PTS"] + df["REB"] + df["AST"] - df["TO"]
-        else:
-            df["EFFICIENCY"] = df["PTS"] + df["REB"] + df["AST"]
-
+    # Sort the data by season to ensure proper order
+    df = df.sort_values(by='SEASON_ID', ascending=True)
+    
     return df
