@@ -30,33 +30,34 @@ The `templates` folder contains the HTML files for the user interface:
 2. **`Results_template.html`**: Displays the player's career statistics, visualizations, and predicted performance.
  
 ### Python Scripts
-1. **`[Website.py](https://github.com/WilliamWuisantono/FinalProjectPython2024/blob/main/Website.py)`**: The main Flask application:
+1. **`Website.py`**: The main Flask application:
+   - [Website.py](https://github.com/WilliamWuisantono/FinalProjectPython2024/blob/main/Website.py)
    - Handles routing for the homepage (`/`) and results page (`/results`).
    - Fetches player statistics, generates visualizations, and uses machine learning models to make predictions.
    - Passes data and visualizations to the HTML templates for display.
  
-2. **`Player_images.py`**: Generates a combined visualization of a player's headshot and career totals:
+3. **`Player_images.py`**: Generates a combined visualization of a player's headshot and career totals:
    - Fetches player headshot images and career stats using the `nba_api`.
    - Creates a side-by-side display of the headshot and a table summarizing key career stats.
    - Saves the visualization as an image in the static folder.
  
-3. **`Data_Preprocessing.py`**: Handles the preprocessing of player statistics data:
+4. **`Data_Preprocessing.py`**: Handles the preprocessing of player statistics data:
    - Reads the input CSV file and fills missing values with 0.
    - Converts percentage columns (e.g., field goal percentage) to readable scales.
    - Cleans season data and sorts it for proper chronological order.
  
-4. **`Data_collections.py`**: Fetches player data using the `nba_api` library:
+5. **`Data_collections.py`**: Fetches player data using the `nba_api` library:
    - Retrieves a player's unique ID based on their full name.
    - Fetches a player's career stats and saves them to a CSV file.
  
-5. **`Generate_Visuals.py`**: Creates interactive visualizations using `plotly`:
+6. **`Generate_Visuals.py`**: Creates interactive visualizations using `plotly`:
    - Career points bar chart.
    - Shooting percentages pie chart.
    - Correlation heatmap.
    - Points vs assists scatter plot.
    - 3D clustered stats visualization.
  
-6. **`Machine_learning.py`**: Implements machine learning models to predict player performance:
+7. **`Machine_learning.py`**: Implements machine learning models to predict player performance:
    - **Multi-Output Regression**: Predicts multiple stats (points, rebounds, assists).
    - **Binary Classification**: Predicts whether a player will be a high performer (e.g., scoring more than 20 points per game).
  
