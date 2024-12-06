@@ -30,7 +30,7 @@ The `templates` folder contains the HTML files for the user interface:
 2. **`Results_template.html`**: Displays the player's career statistics, visualizations, and predicted performance.
  
 ### Python Scripts
-1. **`Website.py`**: The main Flask application:
+1. **`[Website.py](https://github.com/WilliamWuisantono/FinalProjectPython2024/blob/main/Website.py)`**: The main Flask application:
    - Handles routing for the homepage (`/`) and results page (`/results`).
    - Fetches player statistics, generates visualizations, and uses machine learning models to make predictions.
    - Passes data and visualizations to the HTML templates for display.
