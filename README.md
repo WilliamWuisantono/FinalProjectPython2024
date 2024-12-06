@@ -1,5 +1,3 @@
-# FinalProjectPython2024
-
 # NBA Player Stats Visualizer
  
 ## Overview
