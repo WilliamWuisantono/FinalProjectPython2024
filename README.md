@@ -30,30 +30,31 @@ The `templates` folder contains the HTML files for the user interface:
 2. **`Results_template.html`**: Displays the player's career statistics, visualizations, and predicted performance.
  
 ### Python Scripts
-1. **`Website.py`**: The main Flask application:
+
+1. **`Website.py`**: The main Flask application ([Click Here to See File](Website.py)):
    - [Website.py](https://github.com/WilliamWuisantono/FinalProjectPython2024/blob/main/Website.py)
    - Handles routing for the homepage (`/`) and results page (`/results`).
    - Fetches player statistics, generates visualizations, and uses machine learning models to make predictions.
    - Passes data and visualizations to the HTML templates for display.
  
-2. **`Player_images.py`**: Generates a combined visualization of a player's headshot and career totals:
+2. **`player_images.py`**: Generates a combined visualization of a player's headshot and career totals ([Click Here to See File](player_images.py)):
    - [Player_images.py](https://github.com/WilliamWuisantono/FinalProjectPython2024/blob/main/player_images.py)
    - Fetches player headshot images and career stats using the `nba_api`.
    - Creates a side-by-side display of the headshot and a table summarizing key career stats.
-   - Saves the visualization as an image in the static folder.
+   - Saves the visualization as an image in the `static` folder.
  
-3. **`Data_Preprocessing.py`**: Handles the preprocessing of player statistics data:
+3. **`Data_Preprocessing.py`**: Handles the preprocessing of player statistics data ([Click Here to See File](Data_Preprocessing.py)):
    - [Data_Preprocessing.py](https://github.com/WilliamWuisantono/FinalProjectPython2024/blob/main/Data_Preprocessing.py)
    - Reads the input CSV file and fills missing values with 0.
    - Converts percentage columns (e.g., field goal percentage) to readable scales.
    - Cleans season data and sorts it for proper chronological order.
  
-4. **`Data_collections.py`**: Fetches player data using the `nba_api` library:
+4. **`Data_collections.py`**: Fetches player data using the `nba_api` library ([Click Here to See File](Data_collections.py)):
    - [Data_collections.py](https://github.com/WilliamWuisantono/FinalProjectPython2024/blob/main/Data_collections.py)
    - Retrieves a player's unique ID based on their full name.
    - Fetches a player's career stats and saves them to a CSV file.
  
-5. **`Generate_Visuals.py`**: Creates interactive visualizations using `plotly`:
+5. **`Generate_visuals.py`**: Creates interactive visualizations using `plotly` ([Click Here to See File](Generate_visuals.py)):
    - [Generate_Visuals.py](https://github.com/WilliamWuisantono/FinalProjectPython2024/blob/main/Generate_visuals.py)
    - Career points bar chart.
    - Shooting percentages pie chart.
@@ -61,11 +62,10 @@ The `templates` folder contains the HTML files for the user interface:
    - Points vs assists scatter plot.
    - 3D clustered stats visualization.
  
-6. **`Machine_learning.py`**: Implements machine learning models to predict player performance:
+6. **`Machine_learning.py`**: Implements machine learning models to predict player performance ([Click Here to See File](Machine_learning.py)):
    - [Machine_learning.py](https://github.com/WilliamWuisantono/FinalProjectPython2024/blob/main/Machine_learning.py)
    - **Multi-Output Regression**: Predicts multiple stats (points, rebounds, assists).
    - **Binary Classification**: Predicts whether a player will be a high performer (e.g., scoring more than 20 points per game).
- 
 ---
  
 ## Data Source
