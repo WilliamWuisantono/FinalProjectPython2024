@@ -3,15 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ player_name }}'s Stats</title>
+    <title>{{ player_name.title() }}'s Stats</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
     <div class="container">
-        <h1>{{ player_name }}'s Stats</h1>
-        <div class="player-image" style="margin-left: -5cm;">
+        <h1>{{ player_name.title() }}'s Stats</h1>
+        <div class="player-image">
             <h2>Player Headshot and Career Totals</h2>
-            <img src="{{ url_for('static', filename='player_photo.png') }}" alt="{{ player_name }}'s Stats and Image">
+            <img src="{{ url_for('static', filename='player_photo.png') }}" alt="{{ player_name.title() }}'s Stats and Image"  style="margin-left: -5cm;">
         </div>
 
         <div class="visuals">
